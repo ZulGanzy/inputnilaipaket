@@ -1,84 +1,103 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Input Nilai per Paket</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="bg-gray-900 text-white min-h-screen p-6">
-    <div class="max-w-4xl mx-auto">
-      <h1 class="text-3xl font-bold mb-6 text-center">Input Nilai Rata-rata per Paket</h1>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Input Nilai per Paket</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen p-4 sm:p-6">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-2xl sm:text-3xl font-bold mb-6 text-center">Input Nilai Rata-rata per Paket</h1>
 
-      <form id="nilaiForm" class="space-y-6">
-        <table class="w-full text-sm text-left text-gray-300 border border-gray-700">
-          <thead class="text-xs uppercase bg-gray-700 text-gray-200">
-            <tr>
-              <th scope="col" class="px-6 py-3 text-center">Mata Pelajaran</th>
-              <th scope="col" class="px-6 py-3 text-center">Nilai raport</th>
-              <th scope="col" class="px-6 py-3 text-center">Nilai ATS</th>
-            </tr>
-          </thead>
-          <tbody id="formBody" class="bg-gray-800"></tbody>
-        </table>
+    <form id="nilaiForm" class="space-y-6 overflow-x-auto">
+      <table class="w-full text-sm text-left text-gray-300 border border-gray-700 min-w-[600px]">
+        <thead class="text-xs uppercase bg-gray-700 text-gray-200">
+          <tr>
+            <th class="px-4 sm:px-6 py-3 text-center">Mata Pelajaran</th>
+            <th class="px-4 sm:px-6 py-3 text-center">Nilai 1</th>
+            <th class="px-4 sm:px-6 py-3 text-center">Nilai 2</th>
+          </tr>
+        </thead>
+        <tbody id="formBody" class="bg-gray-800"></tbody>
+      </table>
 
-        <div class="text-center">
-          <button type="button" onclick="hitung()" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-md text-white font-semibold">Hitung Total Rata-rata per Paket</button>
-        </div>
-      </form>
+      <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+        <button type="button" onclick="hitung()" class="bg-blue-600 hover:bg-blue-700 px-4 sm:px-6 py-2 rounded-md text-white font-semibold text-sm sm:text-base">Hitung Total Rata-rata per Paket</button>
+        <button type="button" onclick="resetData()" class="bg-red-600 hover:bg-red-700 px-4 sm:px-6 py-2 rounded-md text-white font-semibold text-sm sm:text-base">Reset Data</button>
+      </div>
+    </form>
 
-      <div id="hasilContainer" class="mt-8 text-lg font-semibold text-green-400"></div>
-      <div id="prosesContainer" class="mt-6 p-4 bg-gray-800 rounded-lg font-mono text-sm text-gray-300 whitespace-pre-wrap"></div>
-    </div>
+    <div id="hasilContainer" class="mt-8 text-base sm:text-lg font-semibold text-green-400"></div>
+    <div id="prosesContainer" class="mt-6 p-4 bg-gray-800 rounded-lg font-mono text-xs sm:text-sm text-gray-300 whitespace-pre-wrap overflow-x-auto"></div>
+  </div>
 
-    <script>
-      const paketMapel = {
-        A: ["MATEMATIKA", "FISIKA", "KIMIA", "BIOLOGI"],
-        B: ["MATEMATIKA", "FISIKA", "BIOLOGI", "EKONOMI"],
-        C: ["MATEMATIKA", "FISIKA", "KIMIA", "EKONOMI"],
-        D: ["KIMIA", "BIOLOGI", "EKONOMI", "INFORMATIKA"],
-        E: ["EKONOMI", "GEOGRAFI", "INFORMATIKA", "BAHASA INGGRIS"],
-      };
+  <script>
+    const paketMapel = {
+      A: ['MATEMATIKA TINGKAT LANJUT', 'FISIKA', 'KIMIA', 'BIOLOGI'],
+      B: ['MATEMATIKA TINGKAT LANJUT', 'FISIKA', 'BIOLOGI', 'EKONOMI'],
+      C: ['MATEMATIKA TINGKAT LANJUT', 'FISIKA', 'KIMIA', 'EKONOMI'],
+      D: ['KIMIA', 'BIOLOGI', 'EKONOMI', 'INFORMATIKA'],
+      E: ['EKONOMI', 'GEOGRAFI', 'INFORMATIKA', 'BAHASA INGGRIS TINGKAT LANJUT']
+    };
 
-      const semuaMapel = [...new Set(Object.values(paketMapel).flat())];
-      const formBody = document.getElementById("formBody");
+    const semuaMapel = [...new Set(Object.values(paketMapel).flat())];
+    const formBody = document.getElementById('formBody');
 
-      semuaMapel.forEach((mapel) => {
-        const tr = document.createElement("tr");
-        tr.className = "border-b border-gray-700";
-        tr.innerHTML = `
-        <td class="px-6 py-3">${mapel}</td>
-        <td class="px-6 py-3 text-center"><input type="number" name="${mapel}-1" min="0" max="100" class="w-20 p-1 rounded bg-gray-700 text-white"></td>
-        <td class="px-6 py-3 text-center"><input type="number" name="${mapel}-2" min="0" max="100" class="w-20 p-1 rounded bg-gray-700 text-white"></td>
+    // Buat form input berdasarkan mapel
+    semuaMapel.forEach(mapel => {
+      const nilai1 = localStorage.getItem(`${mapel}-1`) || "";
+      const nilai2 = localStorage.getItem(`${mapel}-2`) || "";
+
+      const tr = document.createElement('tr');
+      tr.className = "border-b border-gray-700";
+      tr.innerHTML = `
+        <td class="px-4 sm:px-6 py-3">${mapel}</td>
+        <td class="px-4 sm:px-6 py-3 text-center"><input type="number" name="${mapel}-1" min="0" max="100" value="${nilai1}" class="w-16 sm:w-20 p-1 rounded bg-gray-700 text-white" oninput="simpanCache('${mapel}-1', this.value)"></td>
+        <td class="px-4 sm:px-6 py-3 text-center"><input type="number" name="${mapel}-2" min="0" max="100" value="${nilai2}" class="w-16 sm:w-20 p-1 rounded bg-gray-700 text-white" oninput="simpanCache('${mapel}-2', this.value)"></td>
       `;
-        formBody.appendChild(tr);
+      formBody.appendChild(tr);
+    });
+
+    function simpanCache(nama, nilai) {
+      localStorage.setItem(nama, nilai);
+    }
+
+    function hitung() {
+      const form = document.forms['nilaiForm'];
+      const rataRataMapel = {};
+      let prosesText = "";
+
+      semuaMapel.forEach(mapel => {
+        const n1 = parseFloat(form[`${mapel}-1`].value) || 0;
+        const n2 = parseFloat(form[`${mapel}-2`].value) || 0;
+        const rata = (n1 + n2) / 2;
+        rataRataMapel[mapel] = rata;
+        prosesText += `${mapel} → (${n1} + ${n2}) / 2 = ${rata.toFixed(2)}\n`;
       });
 
-      function hitung() {
-        const form = document.forms["nilaiForm"];
-        const rataRataMapel = {};
-        let prosesText = "";
-
-        semuaMapel.forEach((mapel) => {
-          const n1 = parseFloat(form[`${mapel}-1`].value);
-          const n2 = parseFloat(form[`${mapel}-2`].value);
-          const rata = (n1 + n2) / 2;
-          rataRataMapel[mapel] = rata;
-          prosesText += `${mapel} → (${n1} + ${n2}) / 2 = ${rata.toFixed(2)}\n`;
-        });
-
-        let hasilHTML = '<h2 class="text-xl font-bold mb-2">Hasil Jumlah Rata-rata:</h2><ul class="list-disc list-inside space-y-2">';
-        for (const [paket, mapelList] of Object.entries(paketMapel)) {
-          let total = 0;
-          let detail = mapelList.map((m) => `${m}: ${rataRataMapel[m].toFixed(2)}`).join(" + ");
-          mapelList.forEach((m) => (total += rataRataMapel[m]));
-          hasilHTML += `<li>Paket ${paket}: ${detail} = <span class="text-green-400">${total.toFixed(2)}</span></li>`;
-        }
-        hasilHTML += "</ul>";
-
-        document.getElementById("hasilContainer").innerHTML = hasilHTML;
-        document.getElementById("prosesContainer").textContent = prosesText;
+      let hasilHTML = '<h2 class="text-lg sm:text-xl font-bold mb-2">Hasil Jumlah Rata-rata:</h2><ul class="list-disc list-inside space-y-2">';
+      for (const [paket, mapelList] of Object.entries(paketMapel)) {
+        let total = 0;
+        let detail = mapelList.map(m => `${m}: ${rataRataMapel[m].toFixed(2)}`).join(" + ");
+        mapelList.forEach(m => total += rataRataMapel[m]);
+        hasilHTML += `<li>Paket ${paket}: ${detail} = <span class="text-green-400">${total.toFixed(2)}</span></li>`;
       }
-    </script>
-  </body>
+      hasilHTML += '</ul>';
+
+      document.getElementById('hasilContainer').innerHTML = hasilHTML;
+      document.getElementById('prosesContainer').textContent = prosesText;
+    }
+
+    function resetData() {
+      if (confirm("Apakah kamu yakin ingin menghapus semua data?")) {
+        semuaMapel.forEach(mapel => {
+          localStorage.removeItem(`${mapel}-1`);
+          localStorage.removeItem(`${mapel}-2`);
+        });
+        location.reload(); // Refresh untuk bersihkan tampilan
+      }
+    }
+  </script>
+</body>
 </html>
