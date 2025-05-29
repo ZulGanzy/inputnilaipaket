@@ -24,8 +24,22 @@
         <p><strong>Nilai Paket A (MTK, FIS, KIM, BIO):</strong> <span id="nilaiA"></span></p>
         <p><strong>Nilai Paket B (EKO, GEO, INF, SOSIO):</strong> <span id="nilaiB"></span></p>
         <p class="text-green-400 font-semibold"><strong>Paket Terbaik:</strong> <span id="paketTerbaik"></span></p>
-      </div>
     </div>
+    <p id="perhatian" class="text-red-400 font-bold text-center"></p>
+      <div id="hasil" class="bg-gray-800 rounded-lg p-4 text-gray-400">
+        <p id="nilaiAll" class="font-semibold"></p>
+        <p id="mat"></p>
+        <p id="fis"></p>
+        <p id="kim"></p>
+        <p id="bio"></p>
+        <p id="eko"></p>
+        <p id="geo"></p>
+        <p id="inf"></p>
+        <p id="sos"></p>
+        <p id="hitungA"></p>
+        <p id="hitungB"></p>
+    </div>
+</div>
 
     <script>
       let dataSiswa = [];
@@ -39,7 +53,15 @@
         INF: 8,
         GEO: 9,
         SOSIO: 10,
+        RANK1: 12,
+        RANK2: 13,
       };
+
+            document.addEventListener('DOMContentLoaded', function() {
+        const savedNIS = localStorage.getItem('lastNIS');
+        if (savedNIS) {
+        document.getElementById('nisInput').value = savedNIS;
+        }});
 
       fetch("data.xlsx")
         .then((res) => res.arrayBuffer())
@@ -52,6 +74,7 @@
 
       function cariData() {
         const nis = document.getElementById("nisInput").value.trim();
+        localStorage.setItem('lastNIS', nis);
         const hasil = document.getElementById("hasil");
 
         const siswa = dataSiswa.find((row) => String(row[0]) === nis);
@@ -68,6 +91,17 @@
         const paketAmapel = ["MTK", "FIS", "KIM", "BIO"];
         const paketBmapel = ["EKO", "GEO", "INF", "SOSIO"];
 
+        const MTK = parseFloat(siswa[mapelIndex.MTK]);
+        const FIS = parseFloat(siswa[mapelIndex.FIS]);
+        const KIM = parseFloat(siswa[mapelIndex.KIM]);
+        const BIO = parseFloat(siswa[mapelIndex.BIO]);
+        const EKO = parseFloat(siswa[mapelIndex.EKO]);
+        const GEO = parseFloat(siswa[mapelIndex.GEO]);
+        const INF = parseFloat(siswa[mapelIndex.INF]);
+        const SOSIO = parseFloat(siswa[mapelIndex.SOSIO]);
+        const rankA = parseFloat(siswa[mapelIndex.RANK1]);
+        const rankB = parseFloat(siswa[mapelIndex.RANK2]);
+
         const nilaiA1 = rataRata(paketAmapel.map((m) => siswa[mapelIndex[m]]));
         const nilaiB1 = rataRata(paketBmapel.map((m) => siswa[mapelIndex[m]]));
 
@@ -78,9 +112,24 @@
 
         document.getElementById("namaSiswa").textContent = nama;
         document.getElementById("kelasSiswa").textContent = kelas;
-        document.getElementById("nilaiA").textContent = nilaiA.toFixed(2);
-        document.getElementById("nilaiB").textContent = nilaiB.toFixed(2);
+        document.getElementById("nilaiA").textContent = `${nilaiA.toFixed(2)} || Ranking: ${rankA} dari 287 siswa`;
+        document.getElementById("nilaiB").textContent = `${nilaiB.toFixed(2)} || Ranking: ${rankB} dari 287 siswa`;
         document.getElementById("paketTerbaik").textContent = paketTerbaik;
+        document.getElementById("nilaiAll").textContent = `NILAI SEMUA MAPEL PILIHAN`;
+        document.getElementById("mat").textContent = "Matematika: " + MTK;
+        document.getElementById("fis").textContent = "Fisika: " + FIS;
+        document.getElementById("kim").textContent = "Kimia: " + KIM;
+        document.getElementById("bio").textContent = "Biologi: " + BIO;
+        document.getElementById("eko").textContent = "Ekonomi: " + EKO;
+        document.getElementById("geo").textContent = "Geografi: " + GEO;
+        document.getElementById("inf").textContent = "Informatika: " + INF;
+        document.getElementById("sos").textContent = "Sosiologi: " + SOSIO;
+        document.getElementById("hitungA").textContent = `Hitungan Paket A: ${MTK} + ${FIS} + ${KIM} + ${BIO} = ${nilaiA.toFixed(2)}`;
+        document.getElementById("hitungB").textContent = `Hitungan Paket B: ${EKO} + ${GEO} + ${INF} + ${SOSIO} = ${nilaiB.toFixed(2)}`;
+        document.getElementById("perhatian").textContent = `Perhatian: Ini hanya perhitungan dari seluruh nilai siswa.`;
+
+    
+
 
         hasil.classList.remove("hidden");
       }
