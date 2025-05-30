@@ -4,140 +4,59 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cek Nilai Paket</title>
+    <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
   </head>
-  <body class="bg-gray-900 text-white min-h-screen p-4 sm:p-6">
-    <div class="max-w-xl mx-auto space-y-6">
-      <h1 class="text-2xl font-bold text-center mb-4">Cek Nilai Paket</h1>
+  <body class="bg-gray-900 text-white min-h-screen p-4 sm:p-6 flex items-center justify-center">
+    <div class="max-w-md mx-auto space-y-8 bg-gray-800 p-8 rounded-xl shadow-lg">
+      <h1 class="text-3xl font-extrabold text-center text-blue-400 mb-6">Cek Nilai Paket</h1>
 
       <div>
-        <label for="nisInput" class="block mb-2">Masukkan NIS:</label>
-        <input type="text" id="nisInput" class="w-full p-2 rounded bg-gray-800 text-white" placeholder="Contoh: 11303" />
+        <label for="nisInput" class="block text-lg font-medium mb-2 text-gray-300">Masukkan NIS:</label>
+        <input type="text" id="nisInput" class="w-full p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:border-blue-500" placeholder="Contoh: 11303" />
       </div>
 
-      <button onclick="cariData()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-white w-full">Cari Data</button>
+      <button onclick="cariData()" class="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 px-6 py-3 rounded-lg text-white font-semibold w-full text-lg shadow-md">Cari Data</button>
 
-      <div id="hasil" class="bg-gray-800 p-4 rounded-lg mt-4 hidden space-y-2">
-        <p><strong>Nama:</strong> <span id="namaSiswa"></span></p>
-        <p><strong>Kelas:</strong> <span id="kelasSiswa"></span></p>
-        <p><strong>Nilai Paket A (MTK, FIS, KIM, BIO):</strong> <span id="nilaiA"></span></p>
-        <p><strong>Nilai Paket B (EKO, GEO, INF, SOSIO):</strong> <span id="nilaiB"></span></p>
-        <p class="text-green-400 font-semibold"><strong>Paket Terbaik:</strong> <span id="paketTerbaik"></span></p>
+      <div id="hasil" class="card-section hidden space-y-4">
+        <h2 class="text-xl font-bold text-blue-300 border-b border-gray-700 pb-3 mb-3">Informasi Siswa</h2>
+        <p><strong>Nama:</strong> <span id="namaSiswa" class="text-gray-200"></span></p>
+        <p><strong>Kelas:</strong> <span id="kelasSiswa" class="text-gray-200"></span></p>
+
+        <h2 class="text-xl font-bold text-blue-300 border-b border-gray-700 pb-3 mb-3 pt-4">Nilai Paket</h2>
+        <p class="text-lg"><strong>Paket A (MTK, FIS, KIM, BIO):</strong> <span id="nilaiA" class="text-green-400"></span></p>
+        <p class="text-lg"><strong>Paket B (EKO, GEO, INF, SOSIO):</strong> <span id="nilaiB" class="text-green-400"></span></p>
+        <p class="text-2xl text-yellow-400 font-extrabold mt-4"><strong>Paket Terbaik:</strong> <span id="paketTerbaik" class="text-yellow-300"></span></p>
+      </div>
+
+      <p id="perhatian" class="text-red-400 font-bold text-center text-sm"></p>
+
+      <div id="detailNilai" class="card-section hidden space-y-2 text-gray-300">
+        <h2 class="text-xl font-bold text-blue-300 border-b border-gray-700 pb-3 mb-3">Rincian Nilai Mata Pelajaran</h2>
+        <p class="text-lg font-bold">Nilai Raport Sem 1 || PTS Sem 2</p>
+        <p>Matematika: <span id="matRaport" class="font-medium"></span> || <span id="matPTS" class="font-medium"></span></p>
+        <p>Fisika: <span id="fisRaport" class="font-medium"></span> || <span id="fisPTS" class="font-medium"></span></p>
+        <p>Kimia: <span id="kimRaport" class="font-medium"></span> || <span id="kimPTS" class="font-medium"></span></p>
+        <p>Biologi: <span id="bioRaport" class="font-medium"></span> || <span id="bioPTS" class="font-medium"></span></p>
+        <p>Ekonomi: <span id="ekoRaport" class="font-medium"></span> || <span id="ekoPTS" class="font-medium"></span></p>
+        <p>Geografi: <span id="geoRaport" class="font-medium"></span> || <span id="geoPTS" class="font-medium"></span></p>
+        <p>Informatika: <span id="infRaport" class="font-medium"></span> || <span id="infPTS" class="font-medium"></span></p>
+        <p>Sosiologi: <span id="sosioRaport" class="font-medium"></span> || <span id="sosioPTS" class="font-medium"></span></p>
+        <p class="pt-4 text-blue-200"><strong>Perhitungan Total:</strong></p>
+        <p id="hitungA" class="text-sm"></p>
+        <p id="hitungB" class="text-sm"></p>
+      </div>
     </div>
-    <p id="perhatian" class="text-red-400 font-bold text-center"></p>
-      <div id="hasil" class="bg-gray-800 rounded-lg p-4 text-gray-400">
-        <p id="nilaiAll" class="font-semibold"></p>
-        <p id="mat"></p>
-        <p id="fis"></p>
-        <p id="kim"></p>
-        <p id="bio"></p>
-        <p id="eko"></p>
-        <p id="geo"></p>
-        <p id="inf"></p>
-        <p id="sos"></p>
-        <p id="hitungA"></p>
-        <p id="hitungB"></p>
+
+    <div id="customAlertModal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <h3 id="alertTitle"></h3>
+        <p id="alertMessage"></p>
+        <button onclick="closeCustomAlert()">OK</button>
+      </div>
     </div>
-</div>
 
-    <script>
-      let dataSiswa = [];
-
-      const mapelIndex = {
-        MTK: 3,
-        FIS: 4,
-        KIM: 5,
-        BIO: 6,
-        EKO: 7,
-        INF: 8,
-        GEO: 9,
-        SOSIO: 10,
-        RANK1: 12,
-        RANK2: 13,
-      };
-
-            document.addEventListener('DOMContentLoaded', function() {
-        const savedNIS = localStorage.getItem('lastNIS');
-        if (savedNIS) {
-        document.getElementById('nisInput').value = savedNIS;
-        }});
-
-      fetch("data.xlsx")
-        .then((res) => res.arrayBuffer())
-        .then((ab) => {
-          const workbook = XLSX.read(ab, { type: "array" });
-          const sheet = workbook.Sheets[workbook.SheetNames[0]];
-          const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-          dataSiswa = json.slice(4); // Ambil mulai dari baris ke-5
-        });
-
-      function cariData() {
-        const nis = document.getElementById("nisInput").value.trim();
-        localStorage.setItem('lastNIS', nis);
-        const hasil = document.getElementById("hasil");
-
-        const siswa = dataSiswa.find((row) => String(row[0]) === nis);
-
-        if (!siswa) {
-          alert("Data tidak ditemukan!");
-          hasil.classList.add("hidden");
-          return;
-        }
-
-        const nama = siswa[1];
-        const kelas = siswa[2];
-
-        const paketAmapel = ["MTK", "FIS", "KIM", "BIO"];
-        const paketBmapel = ["EKO", "GEO", "INF", "SOSIO"];
-
-        const MTK = parseFloat(siswa[mapelIndex.MTK]);
-        const FIS = parseFloat(siswa[mapelIndex.FIS]);
-        const KIM = parseFloat(siswa[mapelIndex.KIM]);
-        const BIO = parseFloat(siswa[mapelIndex.BIO]);
-        const EKO = parseFloat(siswa[mapelIndex.EKO]);
-        const GEO = parseFloat(siswa[mapelIndex.GEO]);
-        const INF = parseFloat(siswa[mapelIndex.INF]);
-        const SOSIO = parseFloat(siswa[mapelIndex.SOSIO]);
-        const rankA = parseFloat(siswa[mapelIndex.RANK1]);
-        const rankB = parseFloat(siswa[mapelIndex.RANK2]);
-
-        const nilaiA1 = rataRata(paketAmapel.map((m) => siswa[mapelIndex[m]]));
-        const nilaiB1 = rataRata(paketBmapel.map((m) => siswa[mapelIndex[m]]));
-
-        const nilaiA = nilaiA1 * 4;
-        const nilaiB = nilaiB1 * 4;
-
-        const paketTerbaik = nilaiA > nilaiB ? "Paket A" : nilaiB > nilaiA ? "Paket B" : "Sama";
-
-        document.getElementById("namaSiswa").textContent = nama;
-        document.getElementById("kelasSiswa").textContent = kelas;
-        document.getElementById("nilaiA").textContent = `${nilaiA.toFixed(2)} || Ranking: ${rankA} dari 287 siswa`;
-        document.getElementById("nilaiB").textContent = `${nilaiB.toFixed(2)} || Ranking: ${rankB} dari 287 siswa`;
-        document.getElementById("paketTerbaik").textContent = paketTerbaik;
-        document.getElementById("nilaiAll").textContent = `NILAI SEMUA MAPEL PILIHAN`;
-        document.getElementById("mat").textContent = "Matematika: " + MTK;
-        document.getElementById("fis").textContent = "Fisika: " + FIS;
-        document.getElementById("kim").textContent = "Kimia: " + KIM;
-        document.getElementById("bio").textContent = "Biologi: " + BIO;
-        document.getElementById("eko").textContent = "Ekonomi: " + EKO;
-        document.getElementById("geo").textContent = "Geografi: " + GEO;
-        document.getElementById("inf").textContent = "Informatika: " + INF;
-        document.getElementById("sos").textContent = "Sosiologi: " + SOSIO;
-        document.getElementById("hitungA").textContent = `Hitungan Paket A: ${MTK} + ${FIS} + ${KIM} + ${BIO} = ${nilaiA.toFixed(2)}`;
-        document.getElementById("hitungB").textContent = `Hitungan Paket B: ${EKO} + ${GEO} + ${INF} + ${SOSIO} = ${nilaiB.toFixed(2)}`;
-        document.getElementById("perhatian").textContent = `Perhatian: Ini hanya perhitungan dari seluruh nilai siswa.`;
-
-    
-
-
-        hasil.classList.remove("hidden");
-      }
-
-      function rataRata(nilaiArray) {
-        const valid = nilaiArray.map((n) => parseFloat(n)).filter((n) => !isNaN(n));
-        return valid.length ? valid.reduce((a, b) => a + b, 0) / valid.length : 0;
-      }
-    </script>
+    <script src="script.js"></script>
   </body>
 </html>

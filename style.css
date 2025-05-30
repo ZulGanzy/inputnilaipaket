@@ -1,0 +1,78 @@
+/* Custom styles to enhance the design beyond basic Tailwind */
+body {
+  font-family: "Inter", sans-serif; /* Using Inter font */
+}
+input[type="text"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* Blue-600 with opacity */
+  border-color: #3b82f6; /* Tailwind blue-500 */
+}
+button {
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+}
+button:active {
+  transform: translateY(1px);
+}
+.card-section {
+  background-color: #2d3748; /* gray-800 */
+  padding: 1.5rem;
+  border-radius: 0.75rem; /* More rounded corners */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+}
+/* Custom modal styling */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+.modal-content {
+  background-color: #1a202c; /* Darker background for modal */
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  max-width: 90%;
+  width: 400px;
+  transform: translateY(-20px);
+  transition: transform 0.3s ease-in-out;
+}
+.modal-overlay.active .modal-content {
+  transform: translateY(0);
+}
+.modal-content h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ef4444; /* Red-500 for error */
+  margin-bottom: 1rem;
+}
+.modal-content p {
+  font-size: 1rem;
+  color: #cbd5e0; /* Gray-300 */
+  margin-bottom: 1.5rem;
+}
+.modal-content button {
+  background-color: #3b82f6; /* Blue-600 */
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+.modal-content button:hover {
+  background-color: #2563eb; /* Blue-700 */
+}
