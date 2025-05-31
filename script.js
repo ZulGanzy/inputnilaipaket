@@ -185,7 +185,7 @@ function cariData() {
   const PTS_SOSIO = parseFloat(row[mapelIndex.PTS_SOSIO2]) || 0;
 
   // Determine the best package
-  const paketTerbaik = totalA > totalB ? "Paket A" : totalB > totalA ? "Paket B" : "Sama (Tidak ada perbedaan signifikan)";
+  const paketTerbaik = totalA > totalB ? "Paket A" : totalB > totalA ? "Paket B" : "Sama";
 
   // Update main display elements
   document.getElementById("namaSiswa").textContent = nama;
@@ -212,8 +212,12 @@ function cariData() {
   document.getElementById("sosioRaport").textContent = RAPORT_SOSIO.toFixed(2);
   document.getElementById("sosioPTS").textContent = PTS_SOSIO.toFixed(2);
 
-  document.getElementById("hitungA").textContent = `Hitungan Paket A: ((${RAPORT_MTK.toFixed(2)}+${PTS_MTK.toFixed(2)})+(${RAPORT_FIS.toFixed(2)}+${PTS_FIS.toFixed(2)})+(${RAPORT_KIM.toFixed(2)}+${PTS_KIM.toFixed(2)})+(${RAPORT_BIO.toFixed(2)}+${PTS_BIO.toFixed(2)}))/2 = ${totalA.toFixed(2)}`;
-  document.getElementById("hitungB").textContent = `Hitung Paket B: ((${RAPORT_MTK.toFixed(2)}+${PTS_MTK.toFixed(2)})+(${RAPORT_FIS.toFixed(2)}+${PTS_FIS.toFixed(2)})+(${RAPORT_KIM.toFixed(2)}+${PTS_KIM.toFixed(2)})+(${RAPORT_BIO.toFixed(2)}+${PTS_BIO.toFixed(2)}))/2 = ${totalB.toFixed(2)}`;
+  document.getElementById("hitungA").textContent = `Hitungan Paket A: ((${RAPORT_MTK.toFixed(2)}+${PTS_MTK.toFixed(2)})+(${RAPORT_FIS.toFixed(2)}+${PTS_FIS.toFixed(2)})+(${RAPORT_KIM.toFixed(2)}+${PTS_KIM.toFixed(2)})+(${RAPORT_BIO.toFixed(
+    2
+  )}+${PTS_BIO.toFixed(2)}))/2 = ${totalA.toFixed(2)}`;
+  document.getElementById("hitungB").textContent = `Hitungan Paket B: ((${RAPORT_EKO.toFixed(2)}+${PTS_EKO.toFixed(2)})+(${RAPORT_GEO.toFixed(2)}+${PTS_GEO.toFixed(2)})+(${RAPORT_INF.toFixed(2)}+${PTS_INF.toFixed(
+    2
+  )})+(${RAPORT_SOSIO.toFixed(2)}+${PTS_SOSIO.toFixed(2)}))/2 = ${totalB.toFixed(2)}`;
   document.getElementById("perhatian").textContent = `Perhatian: Ini hanya perhitungan dari seluruh data nilai siswa. Tetap optimis dengan pilihanmu 🗿`;
 
   // Show the result sections
